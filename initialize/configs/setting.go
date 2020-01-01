@@ -1,21 +1,19 @@
 package configs
 
-import (
-	"fmt"
-	"sync"
-	"webserice/utils"
-)
+import "fmt"
 
-var Setting utils.IniParser
+type AppSetting struct {
+	Port    string
+	AppName string
+}
 
-var once sync.Once
+var Setting = new(AppSetting)
 
 func Init() {
-	once.Do(func() {
-		conf_file_name := "config/config.yml"
-		if err := Setting.Load(conf_file_name); err != nil {
-			fmt.Printf("try load config file[%s] error[%s]\n", conf_file_name, err.Error())
-			return
-		}
-	})
+	InitParse()
+
+	Setting.Port = parse.GetString("", "port")
+	Setting.AppName = parse.GetString("", "app_name")
+	fmt.Println(Setting)
+
 }
